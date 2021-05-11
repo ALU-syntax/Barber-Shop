@@ -299,47 +299,27 @@ public Statement st;
     }//GEN-LAST:event_btnLoginMouseClicked
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
-           PreparedStatement ps;
-        ResultSet asd;
+ try {
+    st = cn.createStatement();
+    rs = st.executeQuery("select * from Customer where IdCustomer='" + IdCustomerTF.getText() + "' AND Name like '%" + nameTF.getText()+"%'");
+    
+    while (rs.next()) {
+      Object[] data = {
+        rs.getString("Name"),
+        rs.getString("NumberPhone"),
+        rs.getString("Address"),
+        rs.getString("Email"),
+        rs.getString("IdCustomer"),
+      };
         
-//        get username and password
-        String name = nameTF.getText();
-        String numberPhone = nmbrPhoneTF.getText();
-        String address = addressTF.getText();
-        String email = emailTF.getText();
-        String id = IdCustomerTF.getText();
+      new PriceList().setVisible(true);
+      this.setVisible(false);
         
-//        Create a select query to check if the username and the password exist in the database
-        String query = "select * from Customer where IdCustomer='" + IdCustomerTF.getText() + "' AND Name like '%" + nameTF.getText()+"%'";
-        
-//        String connectionString = "jdbc:mysql://localhost/" + dbName + "?user=" + dbUserName + "&password=" + dbPassword + "&useUnicode=true&characterEncoding=UTF-8";
-        String url = "jdbc:mysql://localhost/Hairucut_db";    
-        try {
-            ps = tugasproject.Koneksi.Koneksi.Koneksi().prepareStatement(query);
-            
-            ps.setString(1, name);
-            ps.setString(2, numberPhone);
-            ps.setString(3, address);
-            ps.setString(4, email);
-            ps.setString(5, id);
-            asd = ps.executeQuery();
-            
-            if(asd.next())
-            {    
-//                show a new form
-                  PriceList form = new PriceList();
-                  form.setVisible(true);
-                  form.setLocationRelativeTo(null);
-//                  close the curent form
-                this.dispose();                  
-            }else{ 
-//               error message 
-                JOptionPane.showMessageDialog(null, "Invalid User / Password", "Login Error", 2 );
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(TampilanAwal.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
+    } 
+  } catch(Exception e) {
+    	 e.printStackTrace();
+         	
+  }        
     }//GEN-LAST:event_btnLoginActionPerformed
 
     private void btnCapsterMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCapsterMouseClicked
